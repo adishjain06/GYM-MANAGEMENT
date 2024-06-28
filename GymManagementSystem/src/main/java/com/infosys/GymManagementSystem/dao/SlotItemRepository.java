@@ -8,3 +8,4 @@ import com.infosys.GymManagementSystem.bean.SlotItemEmbed;
 public interface SlotItemRepository extends JpaRepository<SlotItem, SlotItemEmbed>{
 	
 }
+ 

@@ -16,7 +16,7 @@
         margin: 0;
         background-color: #f0f0f0; 
         font-family: Arial, sans-serif;
-        background-image: url('https://t3.ftcdn.net/jpg/04/31/55/92/240_F_431559277_rkkDdPgYlypnPwf4EoDIlvkVDiWNBBft.jpg');
+       background-image: url("images/gymLogin.jpg");
        	background-repeat: no-repeat;
       	background-attachment: fixed; 
      	background-size: 100% 100%;
@@ -34,7 +34,7 @@
     .login-box input[type="text"],
     .login-box input[type="password"] {
         width: 80%;
-        padding: 10px;
+        padding: 10px;`
         margin: 10px 0;
         border: 1px solid #ccc;
         border-radius: 5px;

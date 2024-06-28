@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +38,11 @@
         }
         .content {
             padding: 16px;
+            display: flex;
+            justify-content: center;
+           
+            height: calc(100vh - 56px); 
+            text-align: center;
         }
         .subnav {
             float: left;
@@ -73,13 +81,11 @@
         .subnav:hover .subnav-content {
             display: block;
         }
-       
         .hero h1 {
             font-size: 4em;
             margin: 0;
         }
         footer {      
-        
             background-color: #333;
             color: white;
             text-align: center;
@@ -88,33 +94,58 @@
             bottom: 0;
             width: 100%;
         }
-        
-body {
-  background-image: url("/images/index.jpg");
-    background-repeat: no-repeat;
-  background-attachment: fixed; 
-  background-size: 100% 100%;
-}
-
+        body {
+            background-image: url("/images/index.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            background-size: 100% 100%;
+        }
+        .message {
+            color: green; /* Style the message */
+            font-size: 16px;
+            margin: 20px 0;
+            background-color: #f0f0f0;
+            border: 2px solid #4CAF50;
+            padding: 10px;
+            border-radius: 5px;
+            width: 80%; 
+            height:10px;
+            max-width: 500px;
+            position: relative;
+        }
+        .message .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: #4CAF50;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
+    <script>
+        function removeMessage() {
+            document.getElementById('messageBox').style.display = 'none';
+        }
+    </script>
 </head>
-<body >
+<body>
 
 <div class="navbar">
     <a class="active" href="/">Home</a>
     <div class="subnav">
         <button class="subnavbtn">Gym Item 
-        	<i class="fa fa-caret-down"></i>
+            <i class="fa fa-caret-down"></i>
         </button>
         <div class="subnav-content">
             <a href="/gymitem">ADD ITEM</a>
             <a href="/gymitems">ITEM REPORT</a>
-            
         </div>
     </div>
     <div class="subnav">
         <button class="subnavbtn">Slot 
-        	<i class="fa fa-caret-down"></i>
+            <i class="fa fa-caret-down"></i>
         </button>
         <div class="subnav-content">
             <a href="/slot">ADD SLOT</a>
@@ -127,8 +158,14 @@ body {
     </div>
 </div>
 
-
-    <!-- Your home page content goes here -->
+<div class="content">
+    <c:if test="${not empty sessionScope.message}">
+        <div id="messageBox" class="message">
+            ${sessionScope.message}
+            <button class="close-btn" onclick="removeMessage()">&times;</button>
+        </div>
+        <c:remove var="message" scope="session"/>
+    </c:if>
 </div>
 
 <footer>

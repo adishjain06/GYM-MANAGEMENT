@@ -15,7 +15,7 @@
         height: 100vh;
         margin: 0;
         font-family: Arial, sans-serif; 
-        background-image: url("images/gymEntry.jpg");
+        background-image: url("images/gymNewUser.jpg");
         background-repeat: no-repeat;
         background-attachment: fixed; 
         background-size: 100% 100%;
