@@ -72,12 +72,15 @@
         <th>Item Number</th>
         <th>Item Name</th>
         <th>Total Seat/Slot</th>
+        
       </tr>
       <c:forEach items="${itemList}" var="item">
         <tr>
           <td>${item.itemId}</td>
           <td>${item.itemName}</td>
           <td>${item.totalSeat}</td>
+          <td><a href="/slot-item-add/${item.itemId}">ADD TO SLOT</a></td>
+          
         </tr>
       </c:forEach>
     </table>

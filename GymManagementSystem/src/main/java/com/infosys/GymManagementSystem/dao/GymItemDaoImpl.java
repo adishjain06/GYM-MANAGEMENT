@@ -40,6 +40,10 @@ public class GymItemDaoImpl implements GymItemDao {
 		
 		return val;
 	}
+	@Override
+	public Integer findTotalSeatById(long id) {
+		return repository.findTotalSeatById(id);
+	}
 	
 	
 

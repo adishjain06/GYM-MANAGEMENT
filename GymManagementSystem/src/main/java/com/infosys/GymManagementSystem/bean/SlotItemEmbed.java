@@ -14,6 +14,22 @@ public class SlotItemEmbed implements Serializable {
 		
 		
 		
+		public Long getSlotId() {
+			return slotId;
+		}
+
+		public void setSlotId(Long slotId) {
+			this.slotId = slotId;
+		}
+
+		public Long getItemId() {
+			return itemId;
+		}
+
+		public void setItemId(Long itemId) {
+			this.itemId = itemId;
+		}
+
 		public SlotItemEmbed() {
 			super();
 			// TODO Auto-generated constructor stub
