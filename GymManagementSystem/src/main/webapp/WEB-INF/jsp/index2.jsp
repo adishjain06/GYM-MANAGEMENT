@@ -140,7 +140,19 @@ button {
   cursor: pointer;
   transition: background 0.3s;
 }
-
+button a{
+  padding: 10px 20px;
+  font-size:20px;
+  margin-top: 20px;
+  border: none;
+  background: #ff7f50;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button a:hover {
+  background: #ff6347;
+}
 button:hover {
   background: #ff6347;
 }
@@ -401,7 +413,7 @@ h2 {
   font-size: 18px;
   color: #666;
 }
- .message {
+.message {
             color: green; /* Style the message */
             font-size: 16px;
             margin: 20px 0;
@@ -414,7 +426,7 @@ h2 {
             max-width: 500px;
             position: relative;
         }
-        .message .close-btn {
+.message .close-btn {
             position: absolute;
             top: 5px;
             right: 5px;
@@ -451,19 +463,20 @@ h2 {
     
     
     <div class="bg">
-    	<c:if test="${not empty sessionScope.message}">
+    	
+      <!-- Home Section -->
+      <div id="home" class="home-section">
+      <c:if test="${not empty sessionScope.message}">
         <div id="messageBox" class="message">
             ${sessionScope.message}
             <button class="close-btn" onclick="removeMessage()">&times;</button>
         </div>
         <c:remove var="message" scope="session"/>
     </c:if>
-      <!-- Home Section -->
-      <div id="home" class="home-section">
         <h1 class="H1">Transform Your Life Today</h1>
         <p class="P1">Join the best gym in town and achieve your fitness goals</p>
         <div class="cta-buttons">
-          <button >Book Slot Now</button>
+          <button><a href="/slots">Book Slot Now</a></button>
           <!-- <button onclick="getFreeTrial()">Get a Free Trial</button> -->
         </div>
       </div>

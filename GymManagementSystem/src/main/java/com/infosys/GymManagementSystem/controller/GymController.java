@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,7 +21,9 @@ import com.infosys.GymManagementSystem.bean.SlotItemEmbed;
 import com.infosys.GymManagementSystem.dao.GymItemDao;
 import com.infosys.GymManagementSystem.dao.SlotDao;
 import com.infosys.GymManagementSystem.dao.SlotItemDao;
+import com.infosys.GymManagementSystem.exception.SeatNotAvailableException;
 import com.infosys.GymManagementSystem.service.GymItemService;
+import com.infosys.GymManagementSystem.service.GymUserService;
 
 @RestController
 public class GymController {
@@ -34,9 +37,19 @@ public class GymController {
 	@Autowired
 	private GymItemService itemService;
 	
+	@Autowired
+	private GymUserService userService;
+	
 	@GetMapping("/index")
 	public ModelAndView showIndex() {
-		return new ModelAndView("index");
+		String indexPage= "";
+		String usertype=userService.getType();
+		if(usertype.equalsIgnoreCase("Admin"))
+			indexPage="index1";
+		else if(usertype.equalsIgnoreCase("Customer"))
+			indexPage="index2";
+		
+		return new ModelAndView(indexPage);
 	}
 	
 	 
@@ -56,7 +69,7 @@ public class GymController {
 	public ModelAndView saveItem(@ModelAttribute("itemRecord") GymItem gymItem,HttpSession session) {
 		gymItemDao.saveNewItem(gymItem);
 		session.setAttribute("message", "Item added successfully!");
-		return new ModelAndView("index");
+		return new ModelAndView("redirect:/index");
 	}
 	
 	
@@ -67,8 +80,6 @@ public class GymController {
 		mv.addObject("itemList",itemList);
 		return mv;
 	}
-	
-	
 	@GetMapping("/slot")
 	public ModelAndView showSlotEntryPage() {
 		Slot slot= new Slot();
@@ -76,11 +87,8 @@ public class GymController {
 		slot.setSlotId(newId);
 		ModelAndView mv = new ModelAndView("slotEntryPage");
 		mv.addObject("slotRecord",slot);
-		return mv;
-		
-	}
-	
-		
+		return mv;	
+	}	
 	@PostMapping("/slot")
 	public ModelAndView saveSlot(@ModelAttribute("slotRecord") Slot slotItem,HttpSession session) {
 		slotDao.saveNewSlot(slotItem);
@@ -93,7 +101,7 @@ public class GymController {
 		} 
 	
 		session.setAttribute("message", "Slot added successfully!");
-		return new ModelAndView("index");
+		return new ModelAndView("redirect:/index");
 	}
 	@GetMapping("/slots")
 	public ModelAndView showSlotReportPage() {
@@ -102,10 +110,6 @@ public class GymController {
 		mv.addObject("slotList",slotList);
 		return mv;
 	}
-	
-	
-	
-
 	@GetMapping("/slot-show/{id}")
 	public ModelAndView showSlotBookingPage(@PathVariable Long id){
     	Slot slot=slotDao.findSlotById(id);
@@ -119,7 +123,33 @@ public class GymController {
 	@GetMapping("/slot-item-add/{id}") 
 	public ModelAndView saveItemSlots(@PathVariable Long id) {
 		itemService.addNewItemToSlots(id);
-		return new ModelAndView("index");
+		return new ModelAndView("redirect:/index");
+	}
+	
+	@PostMapping("/bookSlot")
+    public ModelAndView bookSlot(@RequestParam("slot_id") Long slotId,@RequestParam("selectItem") Long itemId,HttpSession session) {
+		GymItem gymItem = gymItemDao.findItemsById(itemId);
+        SlotItemEmbed embedId = new SlotItemEmbed(slotId, itemId);
+        SlotItem slotItem = slotItemDao.findItemById(embedId);
+        int totalSeat = gymItem.getTotalSeat();
+        int currentSeatBooked = slotItem.getSeatBooked();
+        int available = totalSeat-currentSeatBooked;
+        if(available>0) {
+        slotItem.setSeatBooked(currentSeatBooked+1);
+        slotItemDao.save(slotItem);
+        session.setAttribute("message", "Slot booked successfully!");
+        }
+        else {
+        	throw new SeatNotAvailableException();
+        }
+        
+        return new ModelAndView("redirect:/index");
+    }
+	
+	@GetMapping("/x") 
+	public ModelAndView index() {
+		ModelAndView mv=new ModelAndView("index");
+		return mv;
 	}
 	
 }

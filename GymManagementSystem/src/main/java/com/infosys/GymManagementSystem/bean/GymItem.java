@@ -16,11 +16,11 @@ public class GymItem {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public GymItem(Long itemId, String itemName, Integer seat) {
+	public GymItem(Long itemId, String itemName, Integer totalseat) {
 		super();
 		this.itemId = itemId;
 		this.itemName = itemName;
-		this.totalSeat = seat;
+		this.totalSeat = totalseat;
 	}
 	public Long getItemId() {
 		return itemId;
@@ -40,6 +40,7 @@ public class GymItem {
 	public void setTotalSeat(Integer totalSeat) {
 		this.totalSeat = totalSeat;
 	}
+	
 	
 	
 	

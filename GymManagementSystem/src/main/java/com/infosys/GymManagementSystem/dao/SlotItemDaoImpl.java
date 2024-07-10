@@ -42,6 +42,7 @@ public class SlotItemDaoImpl implements SlotItemDao{
 	public Set<SlotItemEmbed> findAllEmbeds(){
 		return repository.findAllEmbeds();
 	}
+	
 
 }
 

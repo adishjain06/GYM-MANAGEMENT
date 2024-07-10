@@ -14,8 +14,8 @@
         align-items: center;
         height: 100vh;
         margin: 0;
-        font-family: Arial, sans-serif; 
-        background-image: url("images/gymNewUser.jpg");
+        font-family: Arial, sans-serif;
+        background-image: url("/images/gymNewUser.jpg"); 
         background-repeat: no-repeat;
         background-attachment: fixed; 
         background-size: 100% 100%;
@@ -64,14 +64,14 @@
 <script type="text/javascript">
   function passwordCheck(event) {
     event.preventDefault();
-    var firstName = document.getElementById("firstName").value;
-    var lastName = document.getElementById("lastName").value;
-    var email = document.getElementById("email").value;
-    var type = document.getElementById("type").value;
-    var username = document.getElementById("username").value;
-    var pass1 = document.getElementById("pass1").value;
-    var pass2 = document.getElementById("pass2").value;
-    var passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    var firstName = document.getElementById("firstName").value.trim();
+    var lastName = document.getElementById("lastName").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var type = document.getElementById("type").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var pass1 = document.getElementById("pass1").value.trim();
+    var pass2 = document.getElementById("pass2").value.trim();
+    var passwordPattern = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&*]{6,20}$/;
 
     if (!firstName || !lastName || !email || !type || !username || !pass1 || !pass2) {
       alert("All fields are required.");
@@ -79,7 +79,7 @@
     }
 
     if (!passwordPattern.test(pass1)) {
-      alert("Password must be at least 6 characters long, contain at least one capital letter, and one number.");
+      alert("Password must be at least 6 characters long, contain at least one capital letter, one special character and one number.");
       return;
     }
 
@@ -92,13 +92,13 @@
   }
 </script>
 </head>
-<body >
+<body>
 <div class="container">
   <h2>New User Registration</h2>
   <form:form id="registration-form" method="post" action="/register" modelAttribute="userRecord">
     Enter first name: <form:input path="firstName" id="firstName"/>
     <br/><br/>
-    Enter last name: <form:input path="lastName" id="lastName"/>
+    Enter last name: <form:input path="lastName" id="lastName" />
     <br/><br/>
     Enter email: <form:input path="email" id="email"/>
     <br/><br/>

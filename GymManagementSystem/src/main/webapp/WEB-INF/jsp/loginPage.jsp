@@ -16,7 +16,7 @@
         margin: 0;
         background-color: #f0f0f0; 
         font-family: Arial, sans-serif;
-       background-image: url("images/gymLogin.jpg");
+        background-image: url("/images/index.jpg");
        	background-repeat: no-repeat;
       	background-attachment: fixed; 
      	background-size: 100% 100%;
