@@ -62,6 +62,22 @@
     a:hover {
         text-decoration: underline;
     }
+    
+        .return {
+    padding: 0px 8px;
+    background-color: #00b4ff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    //<a href="/index" class="return">Return</a>
+}
+    }
+    .return:hover{
+    background-color: #2f8db4;
+    }
 </style>
 </head>
 <body>
@@ -80,11 +96,11 @@
           <td>${slot.slotId}</td>
           <td>${slot.slotTime}</td>
           <td>${slot.pricing}</td>
-          <td><a href="/slot-show/${slot.slotId}">Slot Enquire</a></td>
+          <td><a href="/slot-book/${slot.slotId}">BOOK SLOT</a></td>
         </tr>
       </c:forEach>
     </table>
-    <a href="/index">Return</a>
+    <a href="/index" class="return">Return</a>
   </div>
 </body>
 </html>

@@ -65,6 +65,22 @@
     .container button[type="reset"]:hover {
         opacity: 0.8;
     }
+    
+        .return {
+    padding: 0px 8px;
+    background-color: #00b4ff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    //<a href="/index" class="return">Return</a>
+}
+    }
+    .return:hover{
+    background-color: #2f8db4;
+    }
 </style>
 </head>
 <body>
@@ -85,7 +101,7 @@
       <div>
         <button type="submit">Submit</button>
         <button type="reset">Reset</button><br/>
-        <a href="/index">HOME</a>
+        <a href="/index" class="return">HOME</a>
       </div>
     </form:form>
   </div>

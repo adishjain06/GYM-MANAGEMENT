@@ -144,6 +144,7 @@ button a{
   padding: 10px 20px;
   font-size:20px;
   margin-top: 20px;
+  text-decoration: none
   border: none;
   background: #ff7f50;
   color: white;
@@ -380,6 +381,7 @@ button:hover {
   z-index: 5; 
 }
 
+
 .bg {
   background-color: white;
 }
@@ -452,10 +454,13 @@ h2 {
     <div class="navbar">
       <a href="#home">Home</a>
       <a href="/slots">SLOT BOOKING</a>
+      <a href="customerBookingDetails">BOOKING DETAILS</a>
       <a href="#about">About Us</a>
       <a href="#services">Services</a>
       <a href="#trainers">Trainers</a>
       <a href="#plans">Plans</a>
+      <a href="/logout">Logout</a>
+    
       
     </div>
     

@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -62,8 +63,7 @@
     a:hover {
         text-decoration: underline;
     }
-    
-        .return {
+       .return {
     padding: 0px 8px;
     background-color: #00b4ff;
     border: none;
@@ -72,8 +72,7 @@
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    //<a href="/index" class="return">Return</a>
-}
+    
     }
     .return:hover{
     background-color: #2f8db4;
@@ -82,21 +81,25 @@
 </head>
 <body>
   <div class="container">
-    <h1><u><i>All Items</i></u></h1>
+    <h1><u><i>All BOOKING</i></u></h1>
     <table>
       <tr>
-        <th>Item Number</th>
-        <th>Item Name</th>
-        <th>Total Seat/Slot</th>
+        <th>BOOKING</th>
+        <th>USER</th>
+        <th>SLOT NO</th>
+        <th>ITEM NO</th>
         
       </tr>
-      <c:forEach items="${itemList}" var="item">
+      <c:forEach items="${bookList}" var="book">
         <tr>
-          <td>${item.itemId}</td>
-          <td>${item.itemName}</td>
-          <td>${item.totalSeat}</td>
-          <td><a href="/slot-item-add/${item.itemId}">ADD TO SLOT</a></td>
           
+          <td>${book.bookingId}</td>
+          <td>${book.username}</td>
+          <td>${book.slotId}</td>
+          <td>${book.itemId}</td>
+          <td><a href="/cancel-booking/${book.bookingId}">Cancel Booking</a></td>
+          
+         
         </tr>
       </c:forEach>
     </table>

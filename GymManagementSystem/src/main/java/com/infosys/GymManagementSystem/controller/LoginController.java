@@ -37,6 +37,7 @@ public class LoginController {
 		gymUser.setLastName(user.getLastName());
 		gymUser.setType(user.getType());
 		gymUser.setEmail(user.getEmail());
+		
 		gymUser.setUsername(user.getUsername());
 		gymUser.setPassword(encodedPassword);
 		service.save(gymUser);

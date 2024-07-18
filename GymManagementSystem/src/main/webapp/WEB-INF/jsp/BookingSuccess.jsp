@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>All Items</title>
+<title>Booking Details</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -35,24 +34,13 @@
         font-size: 24px;
         margin-bottom: 20px;
     }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
+    p {
+        font-size: 18px;
+        margin-bottom: 10px;
     }
-    table, th, td {
-        border: 1px solid #ccc;
-    }
-    th, td {
-        padding: 10px;
-        text-align: center;
-    }
-    th {
-        background-color: #007BFF;
-        color: white;
-    }
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
+    .success-message {
+        color: green;
+        font-weight: bold;
     }
     a {
         text-decoration: none;
@@ -62,8 +50,7 @@
     a:hover {
         text-decoration: underline;
     }
-    
-        .return {
+       .return {
     padding: 0px 8px;
     background-color: #00b4ff;
     border: none;
@@ -72,8 +59,7 @@
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    //<a href="/index" class="return">Return</a>
-}
+    
     }
     .return:hover{
     background-color: #2f8db4;
@@ -82,25 +68,15 @@
 </head>
 <body>
   <div class="container">
-    <h1><u><i>All Items</i></u></h1>
-    <table>
-      <tr>
-        <th>Item Number</th>
-        <th>Item Name</th>
-        <th>Total Seat/Slot</th>
-        
-      </tr>
-      <c:forEach items="${itemList}" var="item">
-        <tr>
-          <td>${item.itemId}</td>
-          <td>${item.itemName}</td>
-          <td>${item.totalSeat}</td>
-          <td><a href="/slot-item-add/${item.itemId}">ADD TO SLOT</a></td>
-          
-        </tr>
-      </c:forEach>
-    </table>
-    <a href="/index" class="return">Return</a>
+    <h1>Booking Details</h1>
+    <div class="success-message">
+        <p>${message}</p>
+    </div>
+    <p>Booking ID: ${booking.bookingId}</p>
+    <p>Slot ID: ${booking.slotId}</p>
+    <p>Item ID: ${booking.itemId}</p>
+    <p>Username: ${booking.username}</p>
+    <a href="/index" class="return">Return to Bookings</a>
   </div>
 </body>
 </html>

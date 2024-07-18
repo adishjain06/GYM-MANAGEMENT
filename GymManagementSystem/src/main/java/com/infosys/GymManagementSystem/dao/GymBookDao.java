@@ -10,4 +10,6 @@ public interface GymBookDao {
 	public List<GymBook> getBookList();
 	public GymBook findBookInfoById(Long id);
 	public void deleteById(Long id);
+	public List<GymBook> findBookingsByUsername(String username);
+	
 }

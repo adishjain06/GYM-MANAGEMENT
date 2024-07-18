@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.infosys.GymManagementSystem.bean.GymBook;
+import com.infosys.GymManagementSystem.bean.SlotItem;
+import com.infosys.GymManagementSystem.bean.SlotItemEmbed;
 @Service
 @Repository
 public class GymBookDaoImpl implements GymBookDao {
@@ -14,6 +16,9 @@ public class GymBookDaoImpl implements GymBookDao {
 	
 	@Autowired
 	private GymBookRepository repository;
+	
+	@Autowired
+	private SlotItemDao slotItemDao;
 	
 	@Override
 	public void save(GymBook gymBook) {
@@ -48,7 +53,24 @@ public class GymBookDaoImpl implements GymBookDao {
 	@Override
 	public void deleteById(Long id) {
 		// TODO Auto-generated method stub
+		GymBook gymBook = repository.findById(id).orElse(null);
+	    if (gymBook != null) {
+	        SlotItemEmbed embedId = new SlotItemEmbed(gymBook.getSlotId(), gymBook.getItemId());
+	        SlotItem slotItem = slotItemDao.findItemById(embedId);
+	        if (slotItem != null) {
+	            slotItem.setSeatBooked(slotItem.getSeatBooked() - 1);
+	            slotItemDao.save(slotItem);
+	        }
+	    }
 		repository.deleteById(id);
 	}
 
+	@Override
+	public List<GymBook> findBookingsByUsername(String username) {
+		// TODO Auto-generated method stub
+		return repository.findByUsername(username);
+	}
+
+
+    
 }

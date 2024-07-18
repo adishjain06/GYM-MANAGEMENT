@@ -26,22 +26,27 @@ public class GymUser extends User{
 	  super("abc","xyz",new ArrayList<>());
 	    // TODO Auto-generated constructor stub
 	  }
-	  public GymUser(String username,String password, Collection<? extends GrantedAuthority> authorities,String username2,String password2, String firstName, String lastName, String email, String type) {
-	    super(username,password,authorities);
-	    this.username = username2;
-	    this.password = password2;
-	    this.firstName = firstName;
-	    this.lastName = lastName;
-	    this.email = email;
-	    this.type = type;
-	  }
-	  public String getUsername() {
-	    return username;
-	  }
-	  public void setUsername(String username) {
-	    this.username = username;
-	  }
-	  public String getPassword() {
+//	  public GymUser(String username,String password, Collection<? extends GrantedAuthority> authorities,String username2,String password2, String firstName, String lastName, String email, String type) {
+//	    super(username,password,authorities);
+//	    this.username = username2;
+//	    this.password = password2;
+//	    this.firstName = firstName;
+//	    this.lastName = lastName;
+//	    this.email = email;
+//	    this.type = type;
+//	  }
+  public GymUser(String username, String password, Collection<? extends GrantedAuthority> authorities, String username2, String password2, String firstName, String lastName, String email, String type) {
+		super(username,password,authorities);
+		this.username = username2;
+		this.password = password2;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.type = type;
+	}
+  
+  
+	  	  public String getPassword() {
 	    return password;
 	  }
 	  public void setPassword(String password) {
@@ -76,6 +81,12 @@ public class GymUser extends User{
 		    return "GymUser [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
 		        + lastName + ", email=" + email + ", type=" + type + "]";
 		  }
+		public String getUsername() {
+			return username;
+		}
+		public void setUsername(String username) {
+			this.username = username;
+		}
 		  
 
 		}

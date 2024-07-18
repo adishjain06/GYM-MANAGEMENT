@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.infosys.GymManagementSystem.bean.GymBook;
 import com.infosys.GymManagementSystem.bean.GymItem;
+import com.infosys.GymManagementSystem.bean.GymUser;
 import com.infosys.GymManagementSystem.bean.Item;
 import com.infosys.GymManagementSystem.bean.Slot;
 import com.infosys.GymManagementSystem.bean.SlotItem;
 import com.infosys.GymManagementSystem.bean.SlotItemEmbed;
+import com.infosys.GymManagementSystem.dao.GymBookDao;
 import com.infosys.GymManagementSystem.dao.GymItemDao;
 import com.infosys.GymManagementSystem.dao.SlotDao;
 import com.infosys.GymManagementSystem.dao.SlotItemDao;
@@ -33,6 +37,8 @@ public class GymController {
 	private SlotDao slotDao;
 	@Autowired
 	private SlotItemDao slotItemDao;
+	@Autowired
+	private GymBookDao gymBookDao;
 
 	@Autowired
 	private GymItemService itemService;
@@ -97,7 +103,7 @@ public class GymController {
 			SlotItemEmbed embed = new SlotItemEmbed(slotItem.getSlotId(),item.getItemId());
 			SlotItem slot=new SlotItem(embed);
 			slotItemDao.save(slot);
-			System.out.println("hello");
+			
 		} 
 	
 		session.setAttribute("message", "Slot added successfully!");
@@ -110,48 +116,99 @@ public class GymController {
 		mv.addObject("slotList",slotList);
 		return mv;
 	}
-	@GetMapping("/slot-show/{id}")
-	public ModelAndView showSlotBookingPage(@PathVariable Long id){
-    	Slot slot=slotDao.findSlotById(id);
-    	List<Item> itemList=itemService.getItemList(id);
-    	ModelAndView mv=new ModelAndView("slotBookPage");
-    	mv.addObject("slot", slot);
-    	mv.addObject("itemList",itemList);
-    	
-    	return mv;
-    }
+	
 	@GetMapping("/slot-item-add/{id}") 
 	public ModelAndView saveItemSlots(@PathVariable Long id) {
 		itemService.addNewItemToSlots(id);
 		return new ModelAndView("redirect:/index");
 	}
 	
-	@PostMapping("/bookSlot")
-    public ModelAndView bookSlot(@RequestParam("slot_id") Long slotId,@RequestParam("selectItem") Long itemId,HttpSession session) {
-		GymItem gymItem = gymItemDao.findItemsById(itemId);
-        SlotItemEmbed embedId = new SlotItemEmbed(slotId, itemId);
-        SlotItem slotItem = slotItemDao.findItemById(embedId);
-        int totalSeat = gymItem.getTotalSeat();
-        int currentSeatBooked = slotItem.getSeatBooked();
-        int available = totalSeat-currentSeatBooked;
-        if(available>0) {
-        slotItem.setSeatBooked(currentSeatBooked+1);
-        slotItemDao.save(slotItem);
-        session.setAttribute("message", "Slot booked successfully!");
-        }
-        else {
-        	throw new SeatNotAvailableException();
-        }
-        
-        return new ModelAndView("redirect:/index");
-    }
+	@GetMapping("/slot-book/{id}")
+	public ModelAndView showSlotBookPage(@PathVariable Long id){
+	String fname="";
+	String userType=userService.getType();
+	if(userType.equalsIgnoreCase("Admin"))
+			fname="slotBookPageAdmin";
+	else if (userType.equalsIgnoreCase("Customer"))
+			fname="slotBookPageCustomer";	
 	
-	@GetMapping("/x") 
-	public ModelAndView index() {
-		ModelAndView mv=new ModelAndView("index");
+	
+	Slot slot=slotDao.findSlotById(id);
+	List<Item> itemList=itemService.getItemList(id);
+	ModelAndView mv= new ModelAndView(fname);
+	mv.addObject("slot",slot);
+	mv.addObject("itemList", itemList);
+	if(userType.equalsIgnoreCase("Admin")){
+		List<String> userList=userService.getAllCustomer();
+		//userList.forEach(u->System.out.println(u));
+		mv.addObject("userList",userList);
+	}
+	return mv;
+}
+	
+	@GetMapping("/adminBookingDeatils")
+	public ModelAndView showAdminBooking() {
+		List<GymBook> bookList=gymBookDao.getBookList();
+		ModelAndView mv=new ModelAndView("AdminBookingDetails");
+		mv.addObject("bookList",bookList);
 		return mv;
 	}
 	
+	 @GetMapping("/customerBookingDetails")
+	    public ModelAndView showCustomerBookings() {
+	        String username = userService.getUser().getUsername();
+	        List<GymBook> customerBookings = gymBookDao.findBookingsByUsername(username);
+	        ModelAndView mv = new ModelAndView("CustomerBookingDetails");
+	        mv.addObject("bookings", customerBookings);
+	        return mv;
+	    }
+
+	 @GetMapping("/cancel-booking/{id}")
+	    public ModelAndView cancelBooking(@PathVariable Long id) {
+	        gymBookDao.deleteById(id);
+	        
+	       
+	        ModelAndView mv = new ModelAndView("bookingCancellationSuccess");
+	        mv.addObject("message", "Booking has been cancelled successfully!");
+	        return mv;
+	    }
+	
+       
+        
+      
+	
+	@PostMapping("/slot-book")
+	public ModelAndView bookSlot(@RequestParam("slot_id") Long slotId, @RequestParam("selectItem") Long itemId, @RequestParam("userId") String userId, Model model) {
+	    GymItem gymItem = gymItemDao.findItemsById(itemId);
+	    SlotItemEmbed embedId = new SlotItemEmbed(slotId, itemId);
+	    SlotItem slotItem = slotItemDao.findItemById(embedId);
+	    int totalSeat = gymItem.getTotalSeat();
+	    int currentSeatBooked = slotItem.getSeatBooked();
+	    int available = totalSeat - currentSeatBooked;
+	    GymBook gymBook = null;
+
+	    if (available > 0) {
+	        Long bookingId = gymBookDao.generateBookingId();
+	        slotItem.setSeatBooked(currentSeatBooked + 1);
+	        String customerId = "";
+	        if (userId.equals("0"))
+	            customerId = userService.getUser().getUsername();
+	        else
+	            customerId = userId;
+	        gymBook = new GymBook(bookingId, slotId, itemId, customerId);
+
+	        gymBookDao.save(gymBook);
+	        slotItemDao.save(slotItem);
+
+	        model.addAttribute("message", "Slot booked successfully!");
+	        model.addAttribute("booking", gymBook);
+	    } else {
+	        throw new SeatNotAvailableException();
+	    }
+	    
+	    return new ModelAndView("BookingSuccess");
+	}
+
 }
 	
 

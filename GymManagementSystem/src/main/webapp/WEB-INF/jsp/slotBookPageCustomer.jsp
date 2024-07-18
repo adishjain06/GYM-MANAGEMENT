@@ -79,6 +79,24 @@
     .reset-button:hover {
         background-color: #c82333;
     }
+    
+        .return {
+    padding: 0px 8px;
+    background-color: #00b4ff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    //<a href="/index" class="return">Return</a>
+}
+    }
+    .return:hover{
+    background-color: #2f8db4;
+    }
+    
+    
 </style>
 </head>
 <body>
@@ -87,7 +105,8 @@
     <h2>SLOT ID: ${slot.slotId}	&nbsp; SLOT TIMING: ${slot.slotTime} &nbsp; SLOT PRICE: ${slot.pricing}</h2>
     <form:form method="post" action="/slot-book">
         <input type="hidden" value="${slot.slotId}" name="slot_id"/>
-        Select User Id:<input list="users" name="userId"/>
+        <input type="hidden" value="0" name="userId"/>
+       
         <table>
             <tr>
                 <th>Item No</th>
@@ -108,7 +127,8 @@
         </table>
         <div style="text-align: center;">
             <button type="submit">BOOK</button>
-            <button type="reset" class="reset-button">RESET</button>
+            <button type="reset" class="reset-button">RESET</button><br/>
+           <a href="/index" class="return">Return</a>
         </div>
     </form:form>
 </div>
