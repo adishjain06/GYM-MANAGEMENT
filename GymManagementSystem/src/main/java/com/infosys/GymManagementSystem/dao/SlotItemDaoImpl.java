@@ -43,6 +43,19 @@ public class SlotItemDaoImpl implements SlotItemDao{
 		return repository.findAllEmbeds();
 	}
 	
+	@Override
+	public void deleteSlotItemsBySlotId(Long slotId) {
+	    List<SlotItem> slotItems = repository.findBySlotId(slotId);
+	    repository.deleteAll(slotItems);
+	}
+
+	@Override
+	public void deleteSlotItemsByItemId(Long itemId) {
+	    List<SlotItem> slotItems = repository.findByItemId(itemId);
+	    repository.deleteAll(slotItems);
+	}
+
+	
 
 }
 

@@ -10,6 +10,9 @@ public interface SlotDao {
 	public List<Slot> displayAllSlot();
 	public Slot findSlotById(Long id);
 	public Long generateSlotId();
+	public void deleteById(Long id);
 	
+	public void updateSlot(Slot slot);
+
 	
 }

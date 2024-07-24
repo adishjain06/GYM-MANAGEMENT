@@ -82,30 +82,25 @@
 </head>
 <body>
   <div class="container">
-    <h1><u><i>All Items</i></u></h1>
+    <h1><u><i>All SLOTS</i></u></h1>
     <table>
       <tr>
-        <th>Item Number</th>
-        <th>Item Name</th>
-        <th>Total Seat/Slot</th>
-        
+        <th>Slot Number</th>
+        <th>Slot Time</th>
+        <th>Pricing</th>
         <th>Actions</th>
         
       </tr>
-      <c:forEach items="${itemList}" var="item">
+      <c:forEach items="${slotList}" var="slot">
         <tr>
-          <td>${item.itemId}</td>
-          <td>${item.itemName}</td>
-          <td>${item.totalSeat}</td>
-            <td>
-                <a href="/update-gymitem/${item.itemId}">Update</a> | 
-                <a href="/delete-gymitem/${item.itemId}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+          <td>${slot.slotId}</td>
+          <td>${slot.slotTime}</td>
+          <td>${slot.pricing}</td>
+        
+          <td>
+                <a href="/update-slot/${slot.slotId}">Update</a> | 
+                <a href="/delete-slot/${slot.slotId}" onclick="return confirm('Are you sure you want to delete this slot?');">Delete</a>
             </td>
-          <td><a href="/slot-item-add/${item.itemId}">ADD TO SLOT</a>
-          		
-          </td>
-          
-          
         </tr>
       </c:forEach>
     </table>

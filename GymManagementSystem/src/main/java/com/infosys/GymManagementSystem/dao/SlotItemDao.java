@@ -12,5 +12,7 @@ public interface SlotItemDao {
 	public SlotItem findItemById(SlotItemEmbed id);
 	public Integer findSeatBookedById(SlotItemEmbed id);
 	public Set<SlotItemEmbed> findAllEmbeds();
-	
+	public void deleteSlotItemsBySlotId(Long slotId);
+	public void deleteSlotItemsByItemId(Long itemId);
+
 }

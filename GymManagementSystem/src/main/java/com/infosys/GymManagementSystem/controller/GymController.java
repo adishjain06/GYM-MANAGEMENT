@@ -16,15 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.infosys.GymManagementSystem.bean.GymBook;
 import com.infosys.GymManagementSystem.bean.GymItem;
-import com.infosys.GymManagementSystem.bean.GymUser;
 import com.infosys.GymManagementSystem.bean.Item;
 import com.infosys.GymManagementSystem.bean.Slot;
 import com.infosys.GymManagementSystem.bean.SlotItem;
 import com.infosys.GymManagementSystem.bean.SlotItemEmbed;
+import com.infosys.GymManagementSystem.dao.FeedbackDao;
 import com.infosys.GymManagementSystem.dao.GymBookDao;
 import com.infosys.GymManagementSystem.dao.GymItemDao;
 import com.infosys.GymManagementSystem.dao.SlotDao;
 import com.infosys.GymManagementSystem.dao.SlotItemDao;
+import com.infosys.GymManagementSystem.exception.DuplicateBookingException;
 import com.infosys.GymManagementSystem.exception.SeatNotAvailableException;
 import com.infosys.GymManagementSystem.service.GymItemService;
 import com.infosys.GymManagementSystem.service.GymUserService;
@@ -46,15 +47,19 @@ public class GymController {
 	@Autowired
 	private GymUserService userService;
 	
+	@Autowired
+    private FeedbackDao feedbackDao;
+	
 	@GetMapping("/index")
-	public ModelAndView showIndex() {
+	public ModelAndView showIndex(Model model) {
 		String indexPage= "";
 		String usertype=userService.getType();
 		if(usertype.equalsIgnoreCase("Admin"))
 			indexPage="index1";
 		else if(usertype.equalsIgnoreCase("Customer"))
 			indexPage="index2";
-		
+		model.addAttribute("feedbacks", feedbackDao.findAll());
+       
 		return new ModelAndView(indexPage);
 	}
 	
@@ -172,8 +177,64 @@ public class GymController {
 	        mv.addObject("message", "Booking has been cancelled successfully!");
 	        return mv;
 	    }
-	
-       
+	 @GetMapping("/SlotCancellation")
+		public ModelAndView showSlotCancelPage() {
+			List<Slot> slotList=slotDao.displayAllSlot();
+			ModelAndView mv=new ModelAndView("SlotCancellation");
+			mv.addObject("slotList",slotList);
+			return mv;
+		}
+	 @GetMapping("/delete-slot/{id}")
+	 public ModelAndView deleteSlot(@PathVariable Long id) {
+	     slotDao.deleteById(id);
+	     ModelAndView mv = new ModelAndView("redirect:/SlotCancellation");
+	     mv.addObject("message", "Slot deleted successfully!");
+	     return mv;
+	 }
+
+	 @GetMapping("/delete-gymitem/{id}")
+	 public ModelAndView deleteGymItem(@PathVariable Long id) {
+	     gymItemDao.deleteById(id);
+	     ModelAndView mv = new ModelAndView("redirect:/gymitems");
+	     mv.addObject("message", "Gym item deleted successfully!");
+	     return mv;
+	 }
+
+	 
+	// Method to show the update form for Gym Item
+	 @GetMapping("/update-gymitem/{id}")
+	 public ModelAndView showUpdateGymItemForm(@PathVariable Long id) {
+	     GymItem gymItem = gymItemDao.findItemsById(id);
+	     ModelAndView mv = new ModelAndView("updateGymItemPage");
+	     mv.addObject("gymItem", gymItem);
+	     return mv;
+	 }
+
+	 // Method to handle the update submission for Gym Item
+	 @PostMapping("/update-gymitem")
+	 public ModelAndView updateGymItem(@ModelAttribute("gymItem") GymItem gymItem, HttpSession session) {
+	     gymItemDao.saveNewItem(gymItem);
+	     session.setAttribute("message", "Item updated successfully!");
+	     return new ModelAndView("redirect:/gymitems");
+	 }
+
+	 // Method to show the update form for Slot
+	 @GetMapping("/update-slot/{id}")
+	 public ModelAndView showUpdateSlotForm(@PathVariable Long id) {
+	     Slot slot = slotDao.findSlotById(id);
+	     ModelAndView mv = new ModelAndView("updateSlotPage");
+	     mv.addObject("slot", slot);
+	     return mv;
+	 }
+
+	 // Method to handle the update submission for Slot
+	 @PostMapping("/update-slot")
+	 public ModelAndView updateSlot(@ModelAttribute("slot") Slot slot, HttpSession session) {
+	     slotDao.saveNewSlot(slot);
+	     session.setAttribute("message", "Slot updated successfully!");
+	     return new ModelAndView("redirect:/SlotCancellation");
+	 }
+
         
       
 	
@@ -186,29 +247,36 @@ public class GymController {
 	    int currentSeatBooked = slotItem.getSeatBooked();
 	    int available = totalSeat - currentSeatBooked;
 	    GymBook gymBook = null;
+	    String customerId = "";
+        if (userId.equals("0"))
+            customerId = userService.getUser().getUsername();
+        else
+            customerId = userId;
+        
+        List<GymBook> existingBookings = gymBookDao.findBookingsByUsername(customerId);
+        for (GymBook booking : existingBookings) {
+            if (booking.getSlotId().equals(slotId)) {
+                throw new DuplicateBookingException("You have already booked this slot.");
+            }
+        }
 
 	    if (available > 0) {
 	        Long bookingId = gymBookDao.generateBookingId();
 	        slotItem.setSeatBooked(currentSeatBooked + 1);
-	        String customerId = "";
-	        if (userId.equals("0"))
-	            customerId = userService.getUser().getUsername();
-	        else
-	            customerId = userId;
 	        gymBook = new GymBook(bookingId, slotId, itemId, customerId);
-
 	        gymBookDao.save(gymBook);
 	        slotItemDao.save(slotItem);
-
 	        model.addAttribute("message", "Slot booked successfully!");
 	        model.addAttribute("booking", gymBook);
 	    } else {
-	        throw new SeatNotAvailableException();
+	        throw new SeatNotAvailableException("No seats available for the selected slot and item.");
 	    }
 	    
 	    return new ModelAndView("BookingSuccess");
 	}
 
+	
+	
 }
 	
 

@@ -11,5 +11,8 @@ public interface GymBookDao {
 	public GymBook findBookInfoById(Long id);
 	public void deleteById(Long id);
 	public List<GymBook> findBookingsByUsername(String username);
+	public void deleteBookingsBySlotId(Long slotId);
+	public void deleteBookingsByItemId(Long itemId);
+
 	
 }

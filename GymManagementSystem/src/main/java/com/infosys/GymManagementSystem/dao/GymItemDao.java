@@ -10,4 +10,8 @@ public interface GymItemDao {
 	public GymItem findItemsById(Long id);
 	public Long generateItemId();
 	public Integer findTotalSeatById(long id);
+	public void deleteById(Long id);
+	
+	public void updateGymItem(GymItem gymItem);
+
 }

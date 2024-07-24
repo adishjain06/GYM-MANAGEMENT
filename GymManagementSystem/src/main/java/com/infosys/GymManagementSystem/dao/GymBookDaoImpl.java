@@ -70,6 +70,19 @@ public class GymBookDaoImpl implements GymBookDao {
 		// TODO Auto-generated method stub
 		return repository.findByUsername(username);
 	}
+	
+	@Override
+	public void deleteBookingsBySlotId(Long slotId) {
+	    List<GymBook> bookings = repository.findBySlotId(slotId);
+	    repository.deleteAll(bookings);
+	}
+
+	@Override
+	public void deleteBookingsByItemId(Long itemId) {
+	    List<GymBook> bookings = repository.findByItemId(itemId);
+	    repository.deleteAll(bookings);
+	}
+
 
 
     

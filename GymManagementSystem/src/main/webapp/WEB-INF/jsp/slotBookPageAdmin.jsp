@@ -97,14 +97,33 @@
     }
     
 </style>
+<script>
+function validateForm() {
+    var userId = document.querySelector('input[name="userId"]').value;
+    var selectedItem = document.querySelector('input[name="selectItem"]:checked');
+    
+    if (userId === "") {
+        alert("Please select a User ID.");
+        return false;
+    }
+    
+    if (selectedItem === null) {
+        alert("Please select an Item.");
+        return false;
+    }
+    
+    return true;
+}
+</script>
+
 </head>
 <body>
 <div class="container">
     <h3>BOOKING FOR:</h3>
     <h2>SLOT ID: ${slot.slotId}	&nbsp; SLOT TIMING: ${slot.slotTime} &nbsp; SLOT PRICE: ${slot.pricing}</h2>
-    <form:form method="post" action="/slot-book">
+    <form:form method="post" action="/slot-book" onsubmit="return validateForm()">
         <input type="hidden" value="${slot.slotId}" name="slot_id"/>
-        Select User Id:<input list="users" name="userId"/>
+        Select User Id:<input list="users" name="userId" />
         <datalist id="users">
         	<c:forEach items="${userList}" var="usr">
         	<option value="${usr}">

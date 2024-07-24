@@ -149,17 +149,17 @@
         </button>
         <div class="subnav-content">
             <a href="/slot">ADD SLOT</a>
+            <a href="/SlotCancellation">CANCEL SLOT</a>
             <a href="/slots">DISPLAY SLOT</a>
+            
         </div>
         
     </div>
      <div class="subnav">
-        
-        
-            <a href="/adminBookingDeatils">BOOKING DETAILS</a>
-           
-       
-        
+                          <a href="/adminBookingDeatils">BOOKING DETAILS</a>
+    </div>
+    <div class="subnav">
+                        <a href="/feedbacks">View Feedbacks</a>
     </div>
     <a href="#contact">Contact</a>
     <div class="navbar-right">

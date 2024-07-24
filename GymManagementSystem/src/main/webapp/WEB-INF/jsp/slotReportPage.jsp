@@ -90,6 +90,7 @@
         <th>Pricing</th>
         <th>Enquire</th>
         
+        
       </tr>
       <c:forEach items="${slotList}" var="slot">
         <tr>
@@ -97,6 +98,7 @@
           <td>${slot.slotTime}</td>
           <td>${slot.pricing}</td>
           <td><a href="/slot-book/${slot.slotId}">BOOK SLOT</a></td>
+         
         </tr>
       </c:forEach>
     </table>
