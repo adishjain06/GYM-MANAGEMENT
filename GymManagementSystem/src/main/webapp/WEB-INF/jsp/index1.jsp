@@ -149,7 +149,7 @@
         </button>
         <div class="subnav-content">
             <a href="/slot">ADD SLOT</a>
-            <a href="/SlotCancellation">CANCEL SLOT</a>
+            <a href="/SlotCancellation">EDIT SLOT</a>
             <a href="/slots">DISPLAY SLOT</a>
             
         </div>
